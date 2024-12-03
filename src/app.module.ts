@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { LoggerModule } from './shared/logger/logger.module'
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AppService } from './app.service'
       envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
       load: [...Object.values(config)],
     }),
+    LoggerModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

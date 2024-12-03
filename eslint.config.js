@@ -12,7 +12,7 @@ module.exports = antfu(
     rules: {
       'no-console': 'off',
       'unused-imports/no-unused-vars': 'warn',
-      'unused-imports/no-unused-imports': 'off',
+      'unused-imports/no-unused-imports': 'warn',
       'no-template-curly-in-string': 'off',
       // 'no-unused-imports': 'error',
 
@@ -21,7 +21,7 @@ module.exports = antfu(
       'node/prefer-global/buffer': 'off',
       'regexp/no-super-linear-backtracking': 'off',
       'regexp/no-contradiction-with-assertion': 'off',
-      'ts/no-unused-expressions': 'off',
+      'ts/no-unused-expressions': 'warn',
     },
   },
 )
