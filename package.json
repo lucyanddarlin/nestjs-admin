@@ -11,7 +11,8 @@
     "start": "nest start",
     "dev": "nest start --watch",
     "gen-env-types": "npx tsx scripts/genEnvTypes.ts || true",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "repl": "npm run start -- --entryFile repl"
   },
   "dependencies": {
     "@fastify/cookie": "^9.4.0",
