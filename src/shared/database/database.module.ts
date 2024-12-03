@@ -9,7 +9,6 @@ import { TypeOrmLogger } from './typeorm-logger'
 
 @Module({
   imports: [
-
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory(configServer: ConfigService<ConfigKeyPaths>) {
