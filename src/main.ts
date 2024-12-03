@@ -1,6 +1,6 @@
 import cluster from 'node:cluster'
 import path from 'node:path'
-import { Logger } from '@nestjs/common'
+import { HttpStatus, Logger, UnprocessableEntityException, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
 import { NestFactory } from '@nestjs/core'
@@ -8,6 +8,7 @@ import { NestFastifyApplication } from '@Nestjs/platform-fastify'
 import { useContainer } from 'class-validator'
 import { AppModule } from './app.module'
 import { fastifyApp } from './common/adapters/fastify.adapter'
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor'
 import { APP_REG_TOKEN, ConfigKeyPaths } from './config'
 import { isDev, isMainProcess } from './global/env'
 import { setupSwagger } from './setup-swagger'
@@ -36,6 +37,28 @@ async function bootstrap() {
   app.useStaticAssets({ root: path.join(__dirname, '..', 'public') })
 
   !isDev && app.enableShutdownHooks()
+
+  if (isDev) {
+    app.useGlobalInterceptors(new LoggingInterceptor())
+  }
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      transformOptions: { enableImplicitConversion: true },
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      stopAtFirstError: true,
+      exceptionFactory: errors => new UnprocessableEntityException(
+        errors.map((e) => {
+          console.log('exceptionFactory', errors)
+          const rule = Object.keys(e.constraints!)[0]
+          const msg = e.constraints![rule]
+          return msg
+        })[0],
+      ),
+    }),
+  )
 
   setupSwagger(app, configServer)
 

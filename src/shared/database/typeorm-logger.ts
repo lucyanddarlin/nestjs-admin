@@ -17,8 +17,7 @@ export class TypeOrmLogger implements ITypeOrmLogger {
   private stringifyParams(parameters: any[]) {
     try {
       return JSON.stringify(parameters)
-    }
-    catch {
+    } catch {
       return parameters
     }
   }

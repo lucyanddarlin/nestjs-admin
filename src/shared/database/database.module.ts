@@ -15,8 +15,7 @@ import { TypeOrmLogger } from './typeorm-logger'
         let loggerOptions: LoggerOptions = env('DB_LOGGING') as 'all'
         try {
           loggerOptions = JSON.parse(loggerOptions)
-        }
-        catch {
+        } catch {
         }
         return {
           ...configServer.get<IDataBaseConfig>(DB_REG_TOKEN),

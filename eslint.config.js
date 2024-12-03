@@ -22,6 +22,7 @@ module.exports = antfu(
       'regexp/no-super-linear-backtracking': 'off',
       'regexp/no-contradiction-with-assertion': 'off',
       'ts/no-unused-expressions': 'warn',
+      'style/brace-style': ['error', '1tbs'],
     },
   },
 )

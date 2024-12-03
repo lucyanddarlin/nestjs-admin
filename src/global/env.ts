@@ -24,8 +24,7 @@ export function envNumber(key: string, defaultValue: number = 0) {
   return formatValue(key, defaultValue, (value) => {
     try {
       return Number(value)
-    }
-    catch {
+    } catch {
       throw new Error(`${key} environment variable is not a number`)
     }
   })
@@ -35,8 +34,7 @@ export function envBoolean(key: string, defaultValue: boolean = false) {
   return formatValue(key, defaultValue, (value) => {
     try {
       return Boolean(JSON.parse(value))
-    }
-    catch {
+    } catch {
       throw new Error(`${key} environment variable is not a boolean`)
     }
   })
