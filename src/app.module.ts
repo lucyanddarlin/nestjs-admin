@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { DatabaseModule } from './shared/database/database.module'
 import { LoggerModule } from './shared/logger/logger.module'
 
 @Module({
@@ -14,6 +15,7 @@ import { LoggerModule } from './shared/logger/logger.module'
       load: [...Object.values(config)],
     }),
     LoggerModule.forRoot(),
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
