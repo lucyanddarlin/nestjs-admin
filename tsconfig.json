@@ -8,7 +8,7 @@
     "baseUrl": "./",
     "module": "commonjs",
     "paths": {
-      "~/*": ["src/*"]
+      "@/*": ["src/*"]
     },
     "strictBindCallApply": false,
     "strictNullChecks": false,
