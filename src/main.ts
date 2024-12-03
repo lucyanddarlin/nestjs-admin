@@ -9,6 +9,7 @@ import { AppModule } from './app.module'
 import { fastifyApp } from './common/adapters/fastify.adapter'
 import { APP_REG_TOKEN, ConfigKeyPaths } from './config'
 import { isDev, isMainProcess } from './global/env'
+import { setupSwagger } from './setup-swagger'
 
 declare const module: any
 
@@ -33,6 +34,8 @@ async function bootstrap() {
   app.useStaticAssets({ root: path.join(__dirname, '..', 'public') })
 
   !isDev && app.enableShutdownHooks()
+
+  setupSwagger(app, configServer)
 
   await app.listen(port, '0.0.0.0', async () => {
     // const url = await app.getUrl()

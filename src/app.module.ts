@@ -9,7 +9,7 @@ import { AppService } from './app.service'
     ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
-      envFilePath: ['.env.local', `env.${process.env.NODE_ENV}`, '.env'],
+      envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
       load: [...Object.values(config)],
     }),
   ],

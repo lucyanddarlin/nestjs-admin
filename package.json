@@ -8,8 +8,11 @@
   "scripts": {
     "postinstall": "npm run gen-env-types",
     "build": "nest build",
-    "start": "nest start",
-    "dev": "nest start --watch",
+    "start": "cross-env NODE_ENV=development nest start -w --path tsconfig.json",
+    "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
+    "start:prod": "cross-env NODE_ENV=production node dist/main",
+    "dev": "npm run start",
+    "dev:debug": "npm run start:debug",
     "gen-env-types": "npx tsx scripts/genEnvTypes.ts || true",
     "lint:fix": "eslint . --fix",
     "repl": "npm run start -- --entryFile repl"
