@@ -7,9 +7,11 @@ import { AppService } from './app.service'
 import { AllExceptionFilter } from './common/filters/any-exception.filter'
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
+import { REQUEST_MAX_TIME_OUT } from './constant/request.constant'
 import { HealthModule } from './modules/health/health.module'
 import { DatabaseModule } from './shared/database/database.module'
 import { LoggerModule } from './shared/logger/logger.module'
+import { RedisModule } from './shared/redis/redis.module'
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { LoggerModule } from './shared/logger/logger.module'
     LoggerModule.forRoot(),
     DatabaseModule,
     HealthModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [
@@ -29,7 +32,7 @@ import { LoggerModule } from './shared/logger/logger.module'
     { provide: APP_FILTER, useClass: AllExceptionFilter },
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
     { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
-    { provide: APP_INTERCEPTOR, useFactory: () => new TimeoutInterceptor(15 * 1000) },
+    { provide: APP_INTERCEPTOR, useFactory: () => new TimeoutInterceptor(REQUEST_MAX_TIME_OUT) },
   ],
 })
 export class AppModule {}
