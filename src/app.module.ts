@@ -1,10 +1,11 @@
 import config from '@/config'
-import { Module } from '@nestjs/common'
+import { ClassSerializerInterceptor, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { APP_FILTER } from '@nestjs/core'
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AllExceptionFilter } from './common/filters/any-exception.filter'
+import { TransformInterceptor } from './common/interceptors/transform.interceptor'
 import { HealthModule } from './modules/health/health.module'
 import { DatabaseModule } from './shared/database/database.module'
 import { LoggerModule } from './shared/logger/logger.module'
@@ -25,6 +26,8 @@ import { LoggerModule } from './shared/logger/logger.module'
   providers: [
     AppService,
     { provide: APP_FILTER, useClass: AllExceptionFilter },
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
   ],
 })
 export class AppModule {}
