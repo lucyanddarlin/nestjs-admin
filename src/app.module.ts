@@ -2,12 +2,15 @@ import config from '@/config'
 import { ClassSerializerInterceptor, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
+import { FastifyRequest } from 'fastify'
+import { ClsModule } from 'nestjs-cls'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AllExceptionFilter } from './common/filters/any-exception.filter'
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
 import { REQUEST_MAX_TIME_OUT } from './constant/request.constant'
+import { AuthModule } from './modules/auth/auth.module'
 import { HealthModule } from './modules/health/health.module'
 import { DatabaseModule } from './shared/database/database.module'
 import { SharedModule } from './shared/shared.module'
@@ -20,9 +23,23 @@ import { SharedModule } from './shared/shared.module'
       envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
       load: [...Object.values(config)],
     }),
+    ClsModule.forRoot({
+      global: true,
+      interceptor: {
+        mount: true,
+        setup(cls, context) {
+          const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>()
+          if (req.params?.id && req.body) {
+            cls.set('operateId', Number.parseInt(req.params.id))
+          }
+        },
+      },
+    }),
+
     DatabaseModule,
     HealthModule,
     SharedModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
