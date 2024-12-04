@@ -30,7 +30,7 @@ async function bootstrap() {
   const { port, globalPrefix } = configServer.get(APP_REG_TOKEN, { infer: true })
 
   // class-validator 的 DTO 类中注入 nest 容器的依赖(用于自定义验证器)
-  useContainer(app.select(AppModule), { fallbackOnErrors: false })
+  useContainer(app.select(AppModule), { fallbackOnErrors: true })
 
   app.enableCors({ origin: '*', credentials: true })
   app.setGlobalPrefix(globalPrefix)
@@ -51,7 +51,6 @@ async function bootstrap() {
       stopAtFirstError: true,
       exceptionFactory: errors => new UnprocessableEntityException(
         errors.map((e) => {
-          console.log('exceptionFactory', errors)
           const rule = Object.keys(e.constraints!)[0]
           const msg = e.constraints![rule]
           return msg
