@@ -1,3 +1,9 @@
+import { nanoid } from 'nanoid'
+
+export function generateUUID(size: number = 21): string {
+  return nanoid(size)
+}
+
 /**
  * @description 生成随机的值
  */
