@@ -10,8 +10,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { REQUEST_MAX_TIME_OUT } from './constant/request.constant'
 import { HealthModule } from './modules/health/health.module'
 import { DatabaseModule } from './shared/database/database.module'
-import { LoggerModule } from './shared/logger/logger.module'
-import { RedisModule } from './shared/redis/redis.module'
+import { SharedModule } from './shared/shared.module'
 
 @Module({
   imports: [
@@ -21,10 +20,9 @@ import { RedisModule } from './shared/redis/redis.module'
       envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
       load: [...Object.values(config)],
     }),
-    LoggerModule.forRoot(),
     DatabaseModule,
     HealthModule,
-    RedisModule,
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [
