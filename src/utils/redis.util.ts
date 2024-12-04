@@ -7,5 +7,7 @@ export function getRedisKey<T extends string = RedisKeys | '*'>(
   key: T,
   ...contactKeys: string[]
 ): `${Prefix}:${T}${string | ''}` {
-  return `${prefix}:${key}${contactKeys && contactKeys.length ? `:${contactKeys.join('_')}` : ''}`
+  return `${prefix}:${key}${contactKeys && contactKeys.length
+    ? `:${contactKeys.join('_')}`
+    : ''}`
 }

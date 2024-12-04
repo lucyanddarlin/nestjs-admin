@@ -11,7 +11,9 @@ import { UserEntity } from './entity/user.entity'
 
 @Injectable()
 export class UserService {
-  @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
+  @InjectRepository(UserEntity)
+  private readonly userRepository: Repository<UserEntity>
+
   @InjectEntityManager() private entityManager: EntityManager
 
   /**

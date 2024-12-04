@@ -5,8 +5,11 @@ import { DiskHealthIndicator, HealthCheck, HttpHealthIndicator, MemoryHealthIndi
 @ApiTags('Health - 健康检查')
 @Controller('health')
 export class HealthController {
-  constructor(private http: HttpHealthIndicator, private db: TypeOrmHealthIndicator, private memory: MemoryHealthIndicator, private disk: DiskHealthIndicator,
-
+  constructor(
+    private http: HttpHealthIndicator,
+    private db: TypeOrmHealthIndicator,
+    private memory: MemoryHealthIndicator,
+    private disk: DiskHealthIndicator,
   ) {}
 
   @Get('network')

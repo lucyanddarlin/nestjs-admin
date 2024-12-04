@@ -1,9 +1,18 @@
 import { INestApplication, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { APP_REG_TOKEN, ConfigKeyPaths, IAppConfig, ISwaggerConfig, SWAGGER_REG_TOKEN } from './config'
+import {
+  APP_REG_TOKEN,
+  ConfigKeyPaths,
+  IAppConfig,
+  ISwaggerConfig,
+  SWAGGER_REG_TOKEN,
+} from './config'
 
-export function setupSwagger(app: INestApplication, configServer: ConfigService<ConfigKeyPaths>) {
+export function setupSwagger(
+  app: INestApplication,
+  configServer: ConfigService<ConfigKeyPaths>,
+) {
   const { name, port } = configServer.get<IAppConfig>(APP_REG_TOKEN)
   const { enable, path } = configServer.get<ISwaggerConfig>(SWAGGER_REG_TOKEN)
 

@@ -1,7 +1,10 @@
 import { ConfigKeyPaths } from '@/config'
 import { IRedisConfig, REDIS_REG_TOKEN } from '@/config/redis.config'
 import { REDIS_CLIENT } from '@/constant/redis.constant'
-import { RedisModule as NestRedisModule, RedisService } from '@liaoliaots/nestjs-redis'
+import {
+  RedisModule as NestRedisModule,
+  RedisService,
+} from '@liaoliaots/nestjs-redis'
 import { CacheModule } from '@nestjs/cache-manager'
 import { Global, Module, Provider } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'

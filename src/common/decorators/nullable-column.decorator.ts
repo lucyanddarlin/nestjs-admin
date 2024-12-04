@@ -1,3 +1,5 @@
 import { Column, ColumnOptions } from 'typeorm'
 
-export const NullableColumn = (options: ColumnOptions = {}) => Column({ ...options, nullable: true })
+export function NullableColumn(options: ColumnOptions = {}) {
+  return Column({ ...options, nullable: true })
+}

@@ -6,7 +6,9 @@ export class TypeOrmLogger implements ITypeOrmLogger {
 
   constructor(private options: LoggerOptions) {}
 
-  private isEnable(level: 'query' | 'schema' | 'error' | 'warn' | 'info' | 'log' | 'migration'): boolean {
+  private isEnable(
+    level: 'query' | 'schema' | 'error' | 'warn' | 'info' | 'log' | 'migration',
+  ): boolean {
     return (
       this.options === 'all'
       || this.options === true
@@ -49,7 +51,12 @@ export class TypeOrmLogger implements ITypeOrmLogger {
     this.logger.error(`[FAILED QUERY]: ${sql}`, `[QUERY ERROR]: ${error}`)
   }
 
-  logQuerySlow(time: number, query: string, parameters?: any[], _queryRunner?: QueryRunner) {
+  logQuerySlow(
+    time: number,
+    query: string,
+    parameters?: any[],
+    _queryRunner?: QueryRunner,
+  ) {
     const sql = query + (parameters && parameters.length
       ? ` -- PARAMETERS : ${this.stringifyParams(parameters)}`
       : '')
@@ -69,7 +76,11 @@ export class TypeOrmLogger implements ITypeOrmLogger {
     this.logger.log(message)
   }
 
-  log(level: 'log' | 'info' | 'warn', message: any, _queryRunner?: QueryRunner) {
+  log(
+    level: 'log' | 'info' | 'warn',
+    message: any,
+    _queryRunner?: QueryRunner,
+  ) {
     if (!this.isEnable(level))
       return
     switch (level) {

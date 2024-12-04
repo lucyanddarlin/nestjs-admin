@@ -30,7 +30,8 @@ app.getInstance().addHook('onRequest', (request, reply, done) => {
   const { url } = request
 
   if (url.endsWith('.php')) {
-    reply.raw.statusMessage = 'Eh. PHP is not support on this machine. Yep, I also think PHP is best programming language. But for me it is beyond my reach.'
+    reply.raw.statusMessage
+     = 'Eh. PHP is not support on this machine. Yep, I also think PHP is best programming language. But for me it is beyond my reach.'
     return reply.code(418).send()
   }
 

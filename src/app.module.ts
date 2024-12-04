@@ -28,7 +28,9 @@ import { SharedModule } from './shared/shared.module'
       interceptor: {
         mount: true,
         setup(cls, context) {
-          const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>()
+          const req
+          = context.switchToHttp()
+            .getRequest<FastifyRequest<{ Params: { id?: string } }>>()
           if (req.params?.id && req.body) {
             cls.set('operateId', Number.parseInt(req.params.id))
           }

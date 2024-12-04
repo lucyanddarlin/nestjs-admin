@@ -1,5 +1,8 @@
 import type { Redis } from 'ioredis'
-import { API_CACHE_PREFIX, REDIS_IO_ADAPTER_KEY } from '@/constant/redis.constant'
+import {
+  API_CACHE_PREFIX,
+  REDIS_IO_ADAPTER_KEY,
+} from '@/constant/redis.constant'
 import { getRedisKey } from '@/utils/redis.util'
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Inject, Injectable } from '@nestjs/common'

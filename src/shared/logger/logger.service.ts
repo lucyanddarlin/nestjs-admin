@@ -1,7 +1,13 @@
 import { ConfigKeyPaths } from '@/config'
 import { ConsoleLogger, ConsoleLoggerOptions, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { config, createLogger, format, transports, type Logger as WinstonLogger } from 'winston'
+import {
+  config,
+  createLogger,
+  format,
+  transports,
+  type Logger as WinstonLogger,
+} from 'winston'
 import 'winston-daily-rotate-file'
 
 export enum LogLevel {

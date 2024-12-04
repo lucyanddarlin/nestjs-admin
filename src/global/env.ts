@@ -40,7 +40,11 @@ export function envBoolean(key: string, defaultValue: boolean = false) {
   })
 }
 
-function formatValue<T extends BaseType = string>(key: string, defaultValue: T, callback?: (value: string) => T): T {
+function formatValue<T extends BaseType = string>(
+  key: string,
+  defaultValue: T,
+  callback?: (value: string) => T,
+): T {
   const value: string | undefined = process.env[key]
   if (typeof value === 'undefined') {
     return defaultValue

@@ -3,8 +3,9 @@ const antfu = require('@antfu/eslint-config').default
 module.exports = antfu(
   {
     stylistic: {
-      indent: 2,
-      quotes: 'single',
+      'indent': 2,
+      'quotes': 'single',
+      'max-len': 80,
     },
     typescript: true,
   },
@@ -23,6 +24,7 @@ module.exports = antfu(
       'regexp/no-contradiction-with-assertion': 'off',
       'ts/no-unused-expressions': 'warn',
       'style/brace-style': ['error', '1tbs'],
+      'style/max-len': ['error', { code: 120, ignoreStrings: true }],
     },
   },
 )
