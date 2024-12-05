@@ -8,6 +8,14 @@ declare global {
   export interface IListRespData<T = any> {
     items: T[]
   }
+
+  export interface IAuthUser {
+    uid: number
+    pv: number
+    exp?: number
+    iat?: number
+    roles: string[]
+  }
 }
 
 export {}

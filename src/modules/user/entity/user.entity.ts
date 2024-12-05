@@ -1,7 +1,8 @@
 import { NullableColumn } from '@/common/decorators/nullable-column.decorator'
 import { CommonEntity } from '@/common/entity/common.entity'
+import { AccessTokenEntity } from '@/modules/auth/entity/access-token.entity'
 import { Exclude } from 'class-transformer'
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, OneToMany, Relation } from 'typeorm'
 
 @Entity({ name: 'sys_user' })
 export class UserEntity extends CommonEntity {
@@ -35,4 +36,13 @@ export class UserEntity extends CommonEntity {
 
   @NullableColumn({ type: 'tinyint', default: 1 })
   status: number
+
+  @OneToMany(
+    () => AccessTokenEntity,
+    accessToken => accessToken.user,
+    {
+      cascade: true,
+    },
+  )
+  accessToken: Relation<AccessTokenEntity[]>
 }

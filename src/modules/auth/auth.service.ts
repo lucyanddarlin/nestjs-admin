@@ -1,14 +1,22 @@
+import { InjectRedis } from '@/common/decorators/inject-redis.decorator'
 import { BusinessException } from '@/common/exceptions/business.exception'
+import { ISecurityConfig, SecurityConfig } from '@/config/security.config'
 import { ErrorEnum } from '@/constant/error-code.constant'
+import { getAuthTokenKey } from '@/helper/getRedisKey'
 import { md5 } from '@/utils'
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
+import Redis from 'ioredis'
 import { isEmpty } from 'lodash'
 import { UserService } from '../user/user.service'
+import { TokenService } from './services/token.service'
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRedis() private readonly redis: Redis,
+    @Inject(SecurityConfig.KEY) private readonly securityConfig: ISecurityConfig,
     private readonly userService: UserService,
+    private readonly tokenService: TokenService,
 
   ) {}
 
@@ -36,8 +44,8 @@ export class AuthService {
   async login(
     username: string,
     password: string,
-    ip?: string,
-    ua?: string,
+    _ip?: string,
+    _ua?: string,
   ) {
     const existUser = await this.userService.findUserByName(username)
     if (isEmpty(existUser)) {
@@ -49,6 +57,14 @@ export class AuthService {
       throw new BusinessException(ErrorEnum.INVALID_USERNAME_PASSWORD)
     }
 
-    return 'token'
+    const token = await this.tokenService.generateAccessToken(existUser.id, [])
+    await this.redis.set(
+      getAuthTokenKey(existUser.id),
+      token.accessToken,
+      'EX',
+      this.securityConfig.jwtExpire,
+    )
+
+    return token.accessToken
   }
 }

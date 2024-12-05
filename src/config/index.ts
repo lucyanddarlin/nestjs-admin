@@ -2,6 +2,7 @@ import { APP_REG_TOKEN, AppConfig, IAppConfig } from './app.config'
 import { CAPTCHA_REG_TOKEN, CaptchaConfig, ICaptchaConfig } from './captcha.config'
 import { DatabaseConfig, DB_REG_TOKEN, IDataBaseConfig } from './database.config'
 import { IRedisConfig, REDIS_REG_TOKEN, RedisConfig } from './redis.config'
+import { ISecurityConfig, SECURITY_REG_TOKEN, SecurityConfig } from './security.config'
 import { ISwaggerConfig, SWAGGER_REG_TOKEN, SwaggerConfig } from './swagger.config'
 
 export interface AllConfigType {}
@@ -15,6 +16,7 @@ export interface AllConfigType {
   [DB_REG_TOKEN]: IDataBaseConfig
   [REDIS_REG_TOKEN]: IRedisConfig
   [CAPTCHA_REG_TOKEN]: ICaptchaConfig
+  [SECURITY_REG_TOKEN]: ISecurityConfig
 }
 
 export type ConfigKeyPaths = RecordNamePaths<AllConfigType>
@@ -25,4 +27,5 @@ export default {
   DatabaseConfig,
   RedisConfig,
   CaptchaConfig,
+  SecurityConfig,
 }

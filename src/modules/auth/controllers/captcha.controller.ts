@@ -42,6 +42,8 @@ export class CaptchaController {
       img:
        `data:image/svg+xml;base64,${Buffer.from(svg.data).toString('base64')}`,
       id: generateUUID(),
+      // TODO: remove
+      code: svg.text,
     }
 
     await this.redis.set(
