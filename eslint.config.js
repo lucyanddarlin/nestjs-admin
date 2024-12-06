@@ -25,6 +25,7 @@ module.exports = antfu(
       'ts/no-unused-expressions': 'warn',
       'style/brace-style': ['error', '1tbs'],
       'style/max-len': ['error', { code: 120, ignoreStrings: true }],
+      'perfectionist/sort-imports': 'off',
     },
   },
 )
