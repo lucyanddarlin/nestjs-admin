@@ -1,7 +1,7 @@
 import config from '@/config'
 import { ClassSerializerInterceptor, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core'
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
 import { FastifyRequest } from 'fastify'
 import { ClsModule } from 'nestjs-cls'
 import { AppController } from './app.controller'
@@ -11,6 +11,7 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
 import { REQUEST_MAX_TIME_OUT } from './constant/request.constant'
 import { AuthModule } from './modules/auth/auth.module'
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard'
 import { HealthModule } from './modules/health/health.module'
 import { DatabaseModule } from './shared/database/database.module'
 import { SharedModule } from './shared/shared.module'
@@ -50,6 +51,7 @@ import { SharedModule } from './shared/shared.module'
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
     { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
     { provide: APP_INTERCEPTOR, useFactory: () => new TimeoutInterceptor(REQUEST_MAX_TIME_OUT) },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}

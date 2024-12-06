@@ -13,8 +13,8 @@ import { RefreshTokenEntity } from '../entity/refresh-token.entity'
 export class TokenService {
   constructor(
     @InjectRedis() private redis: Redis,
+    @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
     private jwtService: JwtService,
-     @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
 
   ) {}
 
@@ -66,5 +66,30 @@ export class TokenService {
     await refreshToken.save()
 
     return refreshTokenSign
+  }
+
+  /**
+   * @description 检查 AccessToken 是否存在, 并且是否处于有效期内
+   */
+  async checkAccessToken(value: string) {
+    let isValid = false
+    try {
+      await this.verifyAccessToken(value)
+      const res = await AccessTokenEntity.findOne({
+        where: { value },
+        relations: ['user', 'refreshToken'],
+      })
+      isValid = Boolean(res)
+    } catch {
+
+    }
+    return isValid
+  }
+
+  /**
+   * @description 验证 token 是否正确, 如果正确则返回所属用户对象
+   */
+  async verifyAccessToken(token: string): Promise<IAuthUser> {
+    return this.jwtService.verifyAsync(token)
   }
 }

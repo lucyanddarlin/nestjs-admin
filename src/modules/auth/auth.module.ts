@@ -14,11 +14,12 @@ import { AccessTokenEntity } from './entity/access-token.entity'
 import { RefreshTokenEntity } from './entity/refresh-token.entity'
 import { CaptchaService } from './services/captcha.service'
 import { TokenService } from './services/token.service'
+import { JwtStrategy } from './strategies/jwt.strategy'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([AccessTokenEntity, RefreshTokenEntity]),
     PassportModule,
+    TypeOrmModule.forFeature([AccessTokenEntity, RefreshTokenEntity]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -37,6 +38,6 @@ import { TokenService } from './services/token.service'
     UserModule,
   ],
   controllers: [AuthController, CaptchaController],
-  providers: [AuthService, CaptchaService, TokenService],
+  providers: [AuthService, CaptchaService, TokenService, JwtStrategy],
 })
 export class AuthModule {}
