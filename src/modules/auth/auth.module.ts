@@ -16,6 +16,9 @@ import { CaptchaService } from './services/captcha.service'
 import { TokenService } from './services/token.service'
 import { JwtStrategy } from './strategies/jwt.strategy'
 
+const controllers = [AuthController, CaptchaController]
+const providers = [AuthService, CaptchaService, TokenService]
+
 @Module({
   imports: [
     PassportModule,
@@ -37,7 +40,8 @@ import { JwtStrategy } from './strategies/jwt.strategy'
 
     UserModule,
   ],
-  controllers: [AuthController, CaptchaController],
-  providers: [AuthService, CaptchaService, TokenService, JwtStrategy],
+  controllers,
+  providers: [...providers, JwtStrategy],
+  exports: [...providers, TypeOrmModule, JwtModule],
 })
 export class AuthModule {}
