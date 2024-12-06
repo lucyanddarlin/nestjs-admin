@@ -22,5 +22,4 @@ export type IAppConfig = ConfigType<typeof AppConfig>
 
 export const RouterWhiteList: string[] = [
   `${globalPrefix ? '/' : ''}${globalPrefix}/auth/captcha/img`,
-  `${globalPrefix ? '/' : ''}${globalPrefix}/auth/login`,
 ]

@@ -1,3 +1,4 @@
+import { Public } from '@/common/auth/decorators/public.decorator'
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { UserService } from '../user/user.service'
@@ -6,6 +7,7 @@ import { LoginDto, RegisterDto } from './dto/auth.do'
 import { CaptchaService } from './services/captcha.service'
 
 @ApiTags('Auth - 认证模块')
+@Public()
 @Controller('auth')
 export class AuthController {
   constructor(
