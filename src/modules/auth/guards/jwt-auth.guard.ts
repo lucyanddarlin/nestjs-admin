@@ -36,14 +36,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     const token = this.jwtFromRequestFn(request)
+    let result: any = false
     request.accessToken = token
 
-    let result: any = false
     try {
       result = await super.canActivate(context)
     } catch (error) {
       if (isEmpty(token)) {
-        throw new UnauthorizedException('未登录')
+        throw new BusinessException(ErrorEnum.EMPTY_TOKEN)
       }
       if (error instanceof UnauthorizedException) {
         throw new BusinessException(ErrorEnum.INVALID_LOGIN)
