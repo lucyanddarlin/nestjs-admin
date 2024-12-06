@@ -1,7 +1,9 @@
 import { BusinessException } from '@/common/exceptions/business.exception'
 import { RouterWhiteList } from '@/config'
+import { PUBLIC_KEY } from '@/constant/auth.constant'
 import { ErrorEnum } from '@/constant/error-code.constant'
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
 import { FastifyRequest } from 'fastify'
 import { isEmpty, isNil } from 'lodash'
@@ -23,6 +25,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   jwtFromRequestFn = ExtractJwt.fromAuthHeaderAsBearerToken()
 
   constructor(
+    private readonly reflector: Reflector,
     private readonly tokenService: TokenService,
 
   ) {
@@ -30,6 +33,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context: ExecutionContext): Promise<any> {
+    const isPublic = this.reflector.getAllAndOverride(
+      PUBLIC_KEY,
+      [context.getHandler(), context.getClass()],
+    )
     const request = context.switchToHttp().getRequest<FastifyRequest<RequestType>>()
     if (RouterWhiteList.includes(request.routeOptions.url)) {
       return true
@@ -42,6 +49,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     try {
       result = await super.canActivate(context)
     } catch (error) {
+      if (isPublic) {
+        return true
+      }
       if (isEmpty(token)) {
         throw new BusinessException(ErrorEnum.EMPTY_TOKEN)
       }
