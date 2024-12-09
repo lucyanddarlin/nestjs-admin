@@ -31,11 +31,16 @@ export class UserService {
   }
 
   /**
+   * @description 创建用户
+   */
+  async create() {}
+
+  /**
    * @description 注册帐号
    */
   async register({ username, ...data }: RegisterDto) {
-    const exists = await this.userRepository.findOneBy({ username })
-    if (!isEmpty(exists)) {
+    const exist = await this.userRepository.findOneBy({ username })
+    if (!isEmpty(exist)) {
       throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS)
     }
 
@@ -45,8 +50,7 @@ export class UserService {
       const u = manager.create(UserEntity, {
         username,
         password,
-        paslt: salt,
-        status: 1,
+        psalt: salt,
       })
       return await manager.save(u)
     })

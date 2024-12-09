@@ -15,7 +15,7 @@ export class UserEntity extends CommonEntity {
   password: string
 
   @Column({ length: 32 })
-  paslt: string
+  psalt: string
 
   @NullableColumn()
   nickname: string

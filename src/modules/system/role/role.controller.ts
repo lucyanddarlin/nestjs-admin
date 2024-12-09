@@ -1,8 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query } from '@nestjs/common'
 import { RoleService } from './role.service'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiSecurityAuth } from '@/common/decorators/swagger.decorator'
-import { RoleDto } from './role.dto'
+import { RoleDto, RoleQueryDto } from './role.dto'
 
 @ApiTags('System - 角色模块')
 @ApiSecurityAuth()
@@ -14,5 +14,11 @@ export class RoleController {
   @ApiOperation({ summary: '新增角色' })
   async create(@Body() dto: RoleDto) {
     return await this.roleService.create(dto)
+  }
+
+  @Get()
+  @ApiOperation({ summary: '获取角色列表' })
+  async list(@Query() dto: RoleQueryDto) {
+    return this.roleService.list(dto)
   }
 }

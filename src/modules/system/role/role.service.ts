@@ -6,6 +6,7 @@ import { RoleDto, RoleQueryDto } from './role.dto'
 import { MenuEntity } from '../menu/menu.entity'
 import { Pagination } from '@/helper/paginate/pagination'
 import { isNil } from 'lodash'
+import { paginate } from '@/helper/paginate'
 
 @Injectable()
 export class RoleService {
@@ -41,5 +42,7 @@ export class RoleService {
         ...(remark ? { remark: Like(`%${remark}%`) } : null),
         ...(!isNil(status) ? { status } : null),
       })
+
+    return paginate(queryBuilder, { page, pageSize })
   }
 }

@@ -29,7 +29,7 @@ export class AuthService {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND)
     }
 
-    const comparePwd = md5(`${pwd}${existsUser.paslt}`)
+    const comparePwd = md5(`${pwd}${existsUser.psalt}`)
     if (existsUser.password !== comparePwd) {
       throw new BusinessException(ErrorEnum.INVALID_USERNAME_PASSWORD)
     }
@@ -52,7 +52,7 @@ export class AuthService {
       throw new BusinessException(ErrorEnum.USER_NOT_FOUND)
     }
 
-    const comparePwd = md5(`${password}${existUser.paslt}`)
+    const comparePwd = md5(`${password}${existUser.psalt}`)
     if (comparePwd !== existUser.password) {
       throw new BusinessException(ErrorEnum.INVALID_USERNAME_PASSWORD)
     }
