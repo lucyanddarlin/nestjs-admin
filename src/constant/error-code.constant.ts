@@ -23,6 +23,8 @@ export enum ErrorEnum {
   DEPARTMENT_NOT_FOUND = '1019:部门不存在',
   PARAMETER_CONFIG_KEY_EXISTS = '1022:参数配置键值对已存在',
   DEFAULT_ROLE_NOT_FOUND = '1023:所分配的默认角色不存在',
+  ROLE_NOT_FOUND = '1024:角色不存在',
+  CANNOT_DELETE_SUPER_ADMIN = '1025:无法删除管理员',
 
   EMPTY_TOKEN = '1101:未发现 Token',
   INVALID_LOGIN = '1101:登录无效，请重新登录',

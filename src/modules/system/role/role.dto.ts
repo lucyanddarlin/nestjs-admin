@@ -3,7 +3,6 @@ import { IsUnique } from '@/shared/database/constraints/unique.constraint'
 import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger'
 import { IsArray, IsIn, IsOptional, IsString, Matches, MinLength } from 'class-validator'
 import { RoleEntity } from './role.entity'
-import { Optional } from '@nestjs/common'
 import { PagerDto } from '@/common/dto/pager.dto'
 
 export class RoleDto extends OperatorDto {
@@ -21,7 +20,7 @@ export class RoleDto extends OperatorDto {
 
   @ApiProperty({ description: '角色备注' })
   @IsString()
-  @Optional()
+  @IsOptional()
   remark?: string
 
   @ApiProperty({ description: '启用状态' })
