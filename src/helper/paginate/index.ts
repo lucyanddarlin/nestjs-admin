@@ -15,6 +15,9 @@ function resolveOptions(options: IPaginationOptions): [number, number, Paginatio
   ]
 }
 
+/**
+ * @description Repository 方式分页
+ */
 async function paginateRepository<T>(
   repository: Repository<T>,
   options: IPaginationOptions,
@@ -34,6 +37,30 @@ async function paginateRepository<T>(
   return createPaginationObject({ items, totalItems: total, currentPage: page, limit })
 }
 
+/**
+ * @description QueryBuilder 方式分页
+ */
+async function paginateQueryBuilder<T>(
+  queryBuilder: SelectQueryBuilder<T>,
+  options: IPaginationOptions,
+): Promise<Pagination<T>> {
+  const [page, limit, paginationType] = resolveOptions(options)
+  if (paginationType === PaginationTypeEnum.TAKE_AND_SKIP) {
+    queryBuilder.take(limit).skip((page - 1) * limit)
+  } else {
+    queryBuilder.limit(limit).offset((page - 1) * limit)
+  }
+
+  const [items, total] = await queryBuilder.getManyAndCount()
+
+  return createPaginationObject({
+    items,
+    totalItems: total,
+    currentPage: page,
+    limit,
+  })
+}
+
 async function paginate<T extends ObjectLiteral >(
   repository: Repository<T>,
   options: IPaginationOptions,
@@ -50,7 +77,7 @@ async function paginate<T extends ObjectLiteral>(
 ) {
   return repositoryOrQueryBuilder instanceof Repository
     ? paginateRepository(repositoryOrQueryBuilder, options, searchOptions)
-    : {} as Promise<Pagination<T>>
+    : paginateQueryBuilder(repositoryOrQueryBuilder, options)
 }
 
 export { paginate }
