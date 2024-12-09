@@ -1,8 +1,9 @@
 import { NullableColumn } from '@/common/decorators/nullable-column.decorator'
 import { CommonEntity } from '@/common/entity/common.entity'
 import { AccessTokenEntity } from '@/modules/auth/entity/access-token.entity'
+import { RoleEntity } from '@/modules/system/role/role.entity'
 import { Exclude } from 'class-transformer'
-import { Column, Entity, OneToMany, Relation } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, Relation } from 'typeorm'
 
 @Entity({ name: 'sys_user' })
 export class UserEntity extends CommonEntity {
@@ -45,4 +46,12 @@ export class UserEntity extends CommonEntity {
     },
   )
   accessToken: Relation<AccessTokenEntity[]>
+
+  @ManyToMany(() => RoleEntity, role => role.users)
+  @JoinTable({
+    name: 'sys_user_roles',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
+  })
+  roles: Relation<RoleEntity[]>
 }

@@ -1,5 +1,6 @@
+import { applyDecorators } from '@nestjs/common'
 import { Column, ColumnOptions } from 'typeorm'
 
 export function NullableColumn(options: ColumnOptions = {}) {
-  return Column({ ...options, nullable: true })
+  return applyDecorators(Column({ ...options, nullable: true }))
 }

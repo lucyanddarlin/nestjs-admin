@@ -25,6 +25,10 @@ export abstract class CompleteEntity extends CommonEntity {
   @NullableColumn({ name: 'updated_by', comment: '更新者' })
   updatedBy: number
 
+  /**
+   * 不会保存到数据库中的虚拟列，数据量大时可能会有性能问题，有性能要求请考虑在 service 层手动实现
+   * @see https://typeorm.io/decorator-reference#virtualcolumn
+   */
   @ApiProperty({ description: '创建者' })
   @VirtualColumn({ query: alias => `SELECT username FROM sys_user WHERE id = ${alias}.created_by` })
   creator: string

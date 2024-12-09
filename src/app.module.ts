@@ -15,6 +15,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard'
 import { HealthModule } from './modules/health/health.module'
 import { DatabaseModule } from './shared/database/database.module'
 import { SharedModule } from './shared/shared.module'
+import { SystemModule } from './modules/system/system.module'
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SharedModule } from './shared/shared.module'
     HealthModule,
     SharedModule,
     AuthModule,
+    SystemModule,
   ],
   controllers: [AppController],
   providers: [
