@@ -19,7 +19,7 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: '登陆' })
   async login(@Body() { username, password, captchaId, captchaCode }: LoginDto) {
-    await this.captchaService.checkCaptchaImg(captchaId, captchaCode)
+    // await this.captchaService.checkCaptchaImg(captchaId, captchaCode)
     return this.authService.login(username, password)
   }
 

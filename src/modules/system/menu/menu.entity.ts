@@ -29,8 +29,8 @@ export class MenuEntity extends CompleteEntity {
   @NullableColumn({ name: 'component' })
   component: string
 
-  @Column({ name: 'is_ext', type: 'boolean', default: false })
-  isExt: boolean
+  @Column({ name: 'is_ext', type: 'tinyint', default: 0 })
+  isExt: number
 
   @Column({ name: 'ext_open_mode', type: 'tinyint', default: 1 })
   extOpenMode: number
