@@ -26,7 +26,7 @@ export enum ErrorEnum {
   ROLE_NOT_FOUND = '1024:角色不存在',
   CANNOT_DELETE_SUPER_ADMIN = '1025:无法删除管理员',
 
-  EMPTY_TOKEN = '1101:未发现 Token',
+  EMPTY_TOKEN = '1100:未发现 Token',
   INVALID_LOGIN = '1101:登录无效，请重新登录',
   NO_PERMISSION = '1102:无权限访问',
   ONLY_ADMIN_CAN_LOGIN = '1103:不是管理员，无法登录',

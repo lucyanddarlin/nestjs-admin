@@ -17,7 +17,6 @@ export class AuthService {
     @Inject(SecurityConfig.KEY) private readonly securityConfig: ISecurityConfig,
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
-
   ) {}
 
   /**
