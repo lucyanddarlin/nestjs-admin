@@ -35,7 +35,7 @@ export class MenuEntity extends CompleteEntity {
   @Column({ name: 'ext_open_mode', type: 'tinyint', default: 1 })
   extOpenMode: number
 
-  @Column({ name: 'keepAlive', type: 'tinyint', default: 1 })
+  @Column({ name: 'keep_alive', type: 'tinyint', default: 1 })
   keepAlive: number
 
   @Column({ type: 'tinyint', default: 1 })
