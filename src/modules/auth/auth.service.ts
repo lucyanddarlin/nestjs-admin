@@ -10,6 +10,7 @@ import { isEmpty } from 'lodash'
 import { UserService } from '../user/user.service'
 import { TokenService } from './services/token.service'
 import { MenuService } from '../system/menu/menu.service'
+import { RoleService } from '../system/role/role.service'
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
     private readonly menuService: MenuService,
+    private readonly roleService: RoleService,
   ) {}
 
   /**
@@ -58,7 +60,10 @@ export class AuthService {
       throw new BusinessException(ErrorEnum.INVALID_USERNAME_PASSWORD)
     }
 
-    const token = await this.tokenService.generateAccessToken(existUser.id, [])
+    const roleIds = await this.roleService.getRoleIdsByUser(existUser.id)
+    const roles = await this.roleService.getRoleValues(roleIds)
+
+    const token = await this.tokenService.generateAccessToken(existUser.id, roles)
     await this.redis.set(
       getAuthTokenKey(existUser.id),
       token.accessToken,

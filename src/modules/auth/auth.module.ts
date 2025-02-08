@@ -16,6 +16,7 @@ import { CaptchaService } from './services/captcha.service'
 import { TokenService } from './services/token.service'
 import { JwtStrategy } from './strategies/jwt.strategy'
 import { MenuModule } from '../system/menu/menu.module'
+import { RoleModule } from '../system/role/role.module'
 
 const controllers = [AuthController, CaptchaController]
 const providers = [AuthService, CaptchaService, TokenService]
@@ -40,6 +41,7 @@ const providers = [AuthService, CaptchaService, TokenService]
     }),
     UserModule,
     MenuModule,
+    RoleModule,
   ],
   controllers,
   providers: [...providers, JwtStrategy],

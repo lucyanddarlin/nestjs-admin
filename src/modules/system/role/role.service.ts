@@ -93,6 +93,12 @@ export class RoleService {
     return !isEmpty(roles) ? roles.map(r => r.id) : []
   }
 
+  async getRoleValues(ids: number[]) {
+    return (await this.roleRepository.findBy({
+      id: In(ids),
+    })).map(r => r.value)
+  }
+
   hasAdminRole(rids: number[]) {
     return rids.includes(SUPER_ADMIN_ROLE_ID)
   }
