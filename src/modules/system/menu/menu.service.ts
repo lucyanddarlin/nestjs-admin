@@ -117,19 +117,19 @@ export class MenuService {
       result = await this.menuRepository
         .createQueryBuilder('menu')
         .innerJoinAndSelect('menu.roles', 'role')
-        .andWhere('role.id IN (:...roles)', { roleIds })
+        .andWhere('role.id IN (:...roleIds)', { roleIds })
         .andWhere('menu.type IN (1,2)')
         .andWhere('menu.permission IS NOT NULL')
         .getMany()
-      if (!isEmpty(result)) {
-        result.forEach((e) => {
-          if (e.permission) {
-            permission = concat(permission, e.permission.split(','))
-          }
-        })
-        permission = uniq(permission)
-      }
-      return permission
     }
+    if (!isEmpty(result)) {
+      result.forEach((e) => {
+        if (e.permission) {
+          permission = concat(permission, e.permission.split(','))
+        }
+      })
+      permission = uniq(permission)
+    }
+    return permission
   }
 }

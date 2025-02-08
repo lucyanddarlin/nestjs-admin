@@ -73,6 +73,6 @@ export class AuthService {
    * @description 获取用户权限
    */
   async getUserPermission(uid: number) {
-    return this.menuService.getUserPermissions(uid)
+    return await this.menuService.getUserPermissions(uid)
   }
 }
