@@ -15,6 +15,7 @@ import { RefreshTokenEntity } from './entity/refresh-token.entity'
 import { CaptchaService } from './services/captcha.service'
 import { TokenService } from './services/token.service'
 import { JwtStrategy } from './strategies/jwt.strategy'
+import { MenuModule } from '../system/menu/menu.module'
 
 const controllers = [AuthController, CaptchaController]
 const providers = [AuthService, CaptchaService, TokenService]
@@ -37,8 +38,8 @@ const providers = [AuthService, CaptchaService, TokenService]
         }
       },
     }),
-
     UserModule,
+    MenuModule,
   ],
   controllers,
   providers: [...providers, JwtStrategy],

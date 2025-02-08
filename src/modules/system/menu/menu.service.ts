@@ -4,15 +4,17 @@ import { BusinessException } from '@/common/exceptions/business.exception'
 import { ErrorEnum } from '@/constant/error-code.constant'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MenuEntity } from './menu.entity'
-import { Like, Repository } from 'typeorm'
-import { isEmpty, isNil } from 'lodash'
+import { In, IsNull, Like, Not, Repository } from 'typeorm'
+import { concat, isEmpty, isNil, uniq } from 'lodash'
 import { deleteEmptyChildren } from '@/utils/listToTree.util'
 import { generatorMenu } from '@/utils/permission.util'
+import { RoleService } from '../role/role.service'
 
 @Injectable()
 export class MenuService {
   constructor(
     @InjectRepository(MenuEntity) private readonly menuRepository: Repository<MenuEntity>,
+    private readonly roleService: RoleService,
   ) {}
 
   /**
@@ -94,5 +96,40 @@ export class MenuService {
    */
   async getMenuItemInfo(mid: number) {
     return this.menuRepository.findOneBy({ id: mid })
+  }
+
+  /**
+   * @description 获取当前用户的权限
+   */
+  async getUserPermissions(uid: number) {
+    const roleIds = await this.roleService.getRoleIdsByUser(uid)
+    let permission: any[] = []
+    let result: any[] = []
+    if (this.roleService.hasAdminRole(roleIds)) {
+      result = await this.menuRepository.findBy({
+        permission: Not(IsNull()),
+        type: In([1, 2]),
+      })
+    } else {
+      if (isEmpty(roleIds)) {
+        return permission
+      }
+      result = await this.menuRepository
+        .createQueryBuilder('menu')
+        .innerJoinAndSelect('menu.roles', 'role')
+        .andWhere('role.id IN (:...roles)', { roleIds })
+        .andWhere('menu.type IN (1,2)')
+        .andWhere('menu.permission IS NOT NULL')
+        .getMany()
+      if (!isEmpty(result)) {
+        result.forEach((e) => {
+          if (e.permission) {
+            permission = concat(permission, e.permission.split(','))
+          }
+        })
+        permission = uniq(permission)
+      }
+      return permission
+    }
   }
 }

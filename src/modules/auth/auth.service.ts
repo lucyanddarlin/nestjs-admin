@@ -9,6 +9,7 @@ import Redis from 'ioredis'
 import { isEmpty } from 'lodash'
 import { UserService } from '../user/user.service'
 import { TokenService } from './services/token.service'
+import { MenuService } from '../system/menu/menu.service'
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     @Inject(SecurityConfig.KEY) private readonly securityConfig: ISecurityConfig,
     private readonly userService: UserService,
     private readonly tokenService: TokenService,
+    private readonly menuService: MenuService,
   ) {}
 
   /**
@@ -65,5 +67,12 @@ export class AuthService {
     )
 
     return token.accessToken
+  }
+
+  /**
+   * @description 获取用户权限
+   */
+  async getUserPermission(uid: number) {
+    return this.menuService.getUserPermissions(uid)
   }
 }

@@ -5,7 +5,7 @@ import { EntityManager, In, Like, Repository } from 'typeorm'
 import { RoleDto, RoleQueryDto, RoleUpdateDto } from './role.dto'
 import { MenuEntity } from '../menu/menu.entity'
 import { Pagination } from '@/helper/paginate/pagination'
-import { isNil } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 import { paginate } from '@/helper/paginate'
 import { SUPER_ADMIN_ROLE_ID } from '@/constant/system.constant'
 import { ErrorEnum } from '@/constant/error-code.constant'
@@ -81,5 +81,19 @@ export class RoleService {
       throw new BusinessException(ErrorEnum.CANNOT_DELETE_SUPER_ADMIN)
     }
     await this.roleRepository.delete(id)
+  }
+
+  /**
+   * @description 根据用户 id 查询角色id
+   */
+  async getRoleIdsByUser(id: number) {
+    const roles = await this.roleRepository.find({
+      where: { users: { id } },
+    })
+    return !isEmpty(roles) ? roles.map(r => r.id) : []
+  }
+
+  hasAdminRole(rids: number[]) {
+    return rids.includes(SUPER_ADMIN_ROLE_ID)
   }
 }

@@ -6,6 +6,15 @@ import { MenuDto, MenuQueryDto, MenuUpdateDto } from './menu.dto'
 import { CreatorPipe } from '@/common/pipes/creator.pipe'
 import { IdParams } from '@/common/decorators/id-param.decorator'
 import { UpdaterPipe } from '@/common/pipes/updater.pipe'
+import { definedPermission, getDefinedPermissions, Perm } from '@/modules/auth/decorators/permission.decorator'
+
+const permissions = definedPermission('system:menu', {
+  LIST: 'list',
+  CREATE: 'create',
+  READ: 'read',
+  UPDATE: 'update',
+  DELETE: 'delete',
+})
 
 @ApiTags('System - 菜单权限模块')
 @ApiSecurityAuth()
@@ -45,5 +54,12 @@ export class MenuController {
   @ApiOperation({ summary: '删除菜单或者权限' })
   async delete(@IdParams() id: number) {
     return await this.menuService.delete([id])
+  }
+
+  @Get('permissions')
+  @ApiOperation({ summary: '获取服务端定义的所有权限' })
+  @Perm(permissions.LIST)
+  async getPermission() {
+    return getDefinedPermissions()
   }
 }

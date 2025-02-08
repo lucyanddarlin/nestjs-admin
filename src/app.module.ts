@@ -16,6 +16,7 @@ import { HealthModule } from './modules/health/health.module'
 import { DatabaseModule } from './shared/database/database.module'
 import { SharedModule } from './shared/shared.module'
 import { SystemModule } from './modules/system/system.module'
+import { RbacGuard } from './modules/auth/guards/rbac.guard'
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { SystemModule } from './modules/system/system.module'
     { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
     { provide: APP_INTERCEPTOR, useFactory: () => new TimeoutInterceptor(REQUEST_MAX_TIME_OUT) },
     { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RbacGuard },
   ],
 })
 export class AppModule {}
