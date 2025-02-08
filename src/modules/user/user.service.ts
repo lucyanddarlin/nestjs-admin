@@ -6,9 +6,10 @@ import { randomValue } from '@/utils/tool.util'
 import { Injectable } from '@nestjs/common'
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm'
 import { isEmpty } from 'lodash'
-import { EntityManager, Repository } from 'typeorm'
+import { EntityManager, In, Repository } from 'typeorm'
 import { RegisterDto } from '../auth/dto/auth.do'
 import { UserEntity } from './entity/user.entity'
+import { UserDto } from './dto/user.dto'
 
 @Injectable()
 export class UserService {
@@ -33,7 +34,31 @@ export class UserService {
   /**
    * @description 创建用户
    */
-  async create() {}
+  async create({ username, password, roleIds, ...data }: UserDto) {
+    const exists = await this.userRepository.findOneBy({ username })
+    if (!isEmpty(exists)) {
+      throw new BusinessException(ErrorEnum.SYSTEM_USER_EXISTS)
+    }
+    await this.entityManager.transaction(async (manager) => {
+      const salt = randomValue(32)
+
+      if (!password) {
+        // TODO: paramsConfigService
+        const initPassword = 12345
+        password = md5(`${initPassword ?? '12345'}${salt}`)
+      } else {
+        password = md5(`${password ?? '12345'}${salt}`)
+      }
+      const u = manager.create(UserEntity, {
+        username,
+        password,
+        ...data,
+        psalt: salt,
+        roles: await this.userRepository.findBy({ id: In(roleIds) }),
+      })
+      return await manager.save(u)
+    })
+  }
 
   /**
    * @description 注册帐号

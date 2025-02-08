@@ -34,6 +34,7 @@ export class RbacGuard implements CanActivate {
       return true
     }
     // TODO: allowAnon
+    // const allowAnon = true
     const payloadPermission = this.reflector.getAllAndOverride<string | string[]>(
       PERMISSION_KEY,
       [context.getHandler(), context.getClass()],
