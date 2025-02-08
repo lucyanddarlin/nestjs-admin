@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { isMenuGroup, isPermission, MenuDto, MenuUpdateDto } from './menu.dto'
+import { isMenuGroup, isPermission, MenuDto, MenuQueryDto, MenuUpdateDto } from './menu.dto'
 import { BusinessException } from '@/common/exceptions/business.exception'
 import { ErrorEnum } from '@/constant/error-code.constant'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MenuEntity } from './menu.entity'
-import { Repository } from 'typeorm'
-import { isEmpty } from 'lodash'
+import { Like, Repository } from 'typeorm'
+import { isEmpty, isNil } from 'lodash'
+import { deleteEmptyChildren } from '@/utils/listToTree.util'
+import { generatorMenu } from '@/utils/permission.util'
 
 @Injectable()
 export class MenuService {
@@ -49,6 +51,28 @@ export class MenuService {
       parentMenu = await this.menuRepository.findOneBy({ id: menu.parentId })
     }
     return { menu, parentMenu }
+  }
+
+  /**
+   * @description 获取菜单列表
+   */
+  async list({ name, path, permission, component, status }: MenuQueryDto): Promise<MenuEntity[]> {
+    const menus = await this.menuRepository.find({
+      where: {
+        ...(name && { name: Like(`%${name}%`) }),
+        ...(path && { path: Like(`%${path}%`) }),
+        ...(permission && { permission: Like(`%${permission}%`) }),
+        ...(component && { component: Like(`%${component}%`) }),
+        ...(!isNil(status) ? { status } : null),
+      },
+      order: { orderNo: 'ASC' },
+    })
+    const menuList = generatorMenu(menus)
+    if (!isEmpty(menuList)) {
+      deleteEmptyChildren(menuList)
+      return menuList
+    }
+    return menus
   }
 
   /**

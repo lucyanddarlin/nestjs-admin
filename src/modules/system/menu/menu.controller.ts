@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
 import { MenuService } from './menu.service'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiSecurityAuth } from '@/common/decorators/swagger.decorator'
-import { MenuDto, MenuUpdateDto } from './menu.dto'
+import { MenuDto, MenuQueryDto, MenuUpdateDto } from './menu.dto'
 import { CreatorPipe } from '@/common/pipes/creator.pipe'
 import { IdParams } from '@/common/decorators/id-param.decorator'
 import { UpdaterPipe } from '@/common/pipes/updater.pipe'
@@ -21,6 +21,11 @@ export class MenuController {
       dto.parentId = null
     }
     return await this.menuService.create(dto)
+  }
+
+  @Get()
+  async list(@Query() dto: MenuQueryDto) {
+    return this.menuService.list(dto)
   }
 
   @Get(':id')
