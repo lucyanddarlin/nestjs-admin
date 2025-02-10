@@ -69,8 +69,13 @@ export class RoleService {
   /**
    * @description 更新角色信息
    */
-  async update(id: number, dto: RoleUpdateDto) {
-    await this.roleRepository.update(id, dto)
+  async update(id: number, { menuIds, ...data }: RoleUpdateDto) {
+    await this.roleRepository.update(id, data)
+    await this.entityManager.transaction(async (manager) => {
+      const role = await this.roleRepository.findOne({ where: { id } })
+      role.menus = menuIds.length > 0 ? await this.menuRepository.findBy({ id: In(menuIds) }) : []
+      await manager.save(role)
+    })
   }
 
   /**
